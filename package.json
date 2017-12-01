@@ -1,0 +1,35 @@
+{
+    "name": "adventofcode2017",
+    "version": "1.0.0",
+    "description": "Stuff from http://adventofcode.com 2017",
+    "scripts": {
+        "test": "jest",
+        "watch:test": "jest --watchAll"
+    },
+    "dependencies": {
+        "@types/jest": "^21.1.8",
+        "jest": "^21.2.1",
+        "ts-jest": "^21.2.4",
+        "typescript": "^2.6.2"
+    },
+    "jest": {
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js"
+        ],
+        "roots": [
+            "src/"
+        ],
+        "transform": {
+            "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+        },
+        "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+        "testEnvironment": "node",
+        "coverageDirectory": "./coverage",
+        "collectCoverage": true,
+        "collectCoverageFrom": [
+            "src/**/*.ts"
+        ]
+    }
+}
