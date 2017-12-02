@@ -1,26 +1,32 @@
 {
-    "name": "adventofcode2017",
+    "name": "advent-of-code-2017",
     "version": "1.0.0",
     "description": "Stuff from http://adventofcode.com 2017",
     "scripts": {
+        "precommit": "lint-staged",
         "test": "jest",
         "watch:test": "jest --watchAll"
     },
     "dependencies": {
         "@types/jest": "^21.1.8",
+        "husky": "^0.14.3",
         "jest": "^21.2.1",
+        "lint-staged": "^6.0.0",
+        "prettier": "^1.8.2",
         "ts-jest": "^21.2.4",
+        "tslint": "^5.8.0",
         "typescript": "^2.6.2"
     },
+    "lint-staged": {
+        "*.ts": [
+            "tslint",
+            "prettier --parser typescript --single-quote --tab-width 4 --write",
+            "git add"
+        ]
+    },
     "jest": {
-        "moduleFileExtensions": [
-            "ts",
-            "tsx",
-            "js"
-        ],
-        "roots": [
-            "src/"
-        ],
+        "moduleFileExtensions": ["ts", "tsx", "js"],
+        "roots": ["src/"],
         "transform": {
             "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
         },
@@ -28,8 +34,6 @@
         "testEnvironment": "node",
         "coverageDirectory": "./coverage",
         "collectCoverage": true,
-        "collectCoverageFrom": [
-            "src/**/*.ts"
-        ]
+        "collectCoverageFrom": ["src/**/*.ts"]
     }
 }

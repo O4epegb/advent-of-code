@@ -1,7 +1,5 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "noEmit": true,
         "strict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true
