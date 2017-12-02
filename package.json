@@ -5,7 +5,10 @@
     "scripts": {
         "precommit": "lint-staged",
         "test": "jest",
-        "watch:test": "jest --watchAll"
+        "watch:test": "jest --watchAll",
+        "lintAll": "tslint --fix \"./src/**/*.ts\"",
+        "prettierAll":
+            "prettier --parser typescript --single-quote --tab-width 4 --write \"./src/**/*.ts\""
     },
     "dependencies": {
         "@types/jest": "^21.1.8",
