@@ -21,90 +21,102 @@ export function part1(programmList: string): string {
     return allProgrammNames.filter(programmName => !deps[programmName])[0];
 }
 
-// TODO cant handle real test input
-export function part2(programmList: string): number {
-    const programmsWeightByName: { [key: string]: number } = {};
-    const programmDepsByName: { [key: string]: Array<string> } = {};
+interface Node {
+    id: string;
+    weight: number;
+    children: Array<Node>;
+    childrenNames: Array<string> | null;
+}
 
-    programmList
+function totalNodeWeight({ weight, children }: Node): number {
+    return (
+        weight +
+        children.reduce((acc, child) => acc + totalNodeWeight(child), 0)
+    );
+}
+
+export function part2(input: string): number {
+    const regexp = /(.*)\s\((\d*)\)( -> (.*))?/;
+    const map: { [nodeName: string]: Node } = {};
+
+    input
         .trim()
         .split('\n')
-        .forEach(programm => {
-            const [, programmName, weight, , dependecies = ''] = programm.match(
-                /(.*)\s\((\d*)\)( -> (.*))?/
+        .forEach(line => {
+            const [, nodeName, weight, , childrenString = ''] = line.match(
+                regexp
             ) as Array<string>;
 
-            programmsWeightByName[programmName] = Number(weight);
-
-            if (!dependecies) {
-                return;
-            }
-
-            programmDepsByName[programmName] = dependecies.split(', ');
+            map[nodeName] = {
+                id: nodeName,
+                weight: Number(weight),
+                children: [],
+                childrenNames: childrenString
+                    ? childrenString.split(', ')
+                    : null
+            };
         });
 
-    const programmNames = Object.keys(programmDepsByName);
-
-    for (const name of programmNames) {
-        const deps = programmDepsByName[name];
-        const depWeighs = deps.map(depName => programmsWeightByName[depName]);
-        const totalWeights = [];
-
-        for (const depName of deps) {
-            const otherDeps = programmDepsByName[depName] || [];
-
-            // if (!otherDeps) {
-            //     continue;
-            // }
-
-            const otherDepTotalWeight = otherDeps.reduce(
-                (acc, depName1) => acc + programmsWeightByName[depName1],
-                0
+    for (const nodeName of Object.keys(map)) {
+        const currentNode = map[nodeName];
+        if (currentNode.childrenNames) {
+            currentNode.children = currentNode.childrenNames.map(
+                name => map[name]
             );
-
-            // const someDepsAreWrong =
-            //     otherDepTotalWeight / otherDeps.length !==
-            //     programmsWeightByName[otherDeps[0]];
-
-            // if (someDepsAreWrong) {
-            //     continue;
-            // }
-
-            const totalWeghtWithDeps =
-                otherDepTotalWeight + programmsWeightByName[depName];
-
-            totalWeights.push(totalWeghtWithDeps);
-        }
-
-        // if (!a.length) {
-        //     continue;
-        // }
-
-        console.log(totalWeights);
-
-        const average = totalWeights.reduce(
-            (acc, weight) => (acc + weight) / 2
-        );
-
-        for (let i = 0; i < totalWeights.length; i++) {
-            const weight = totalWeights[i];
-
-            if (weight > average) {
-                const nextItem = totalWeights[(i + 1) % totalWeights.length];
-                const difference = weight - nextItem;
-                const currentItem = depWeighs[i];
-                console.log({
-                    totalWeights,
-                    weight,
-                    nextItem,
-                    depWeighs,
-                    currentItem,
-                    difference
-                });
-                return currentItem - difference;
-            }
         }
     }
 
-    return 0;
+    const root = map[part1(input)];
+
+    // Now work backwards, which 'child' has the incorrect weight
+    // getWrongChild will recursively scan for the wrong child
+    const { node, targetWeight } = getWrongChild(root, 0);
+    // Get the adjustment value
+    const diff = totalNodeWeight(node) - targetWeight;
+    // Return the node weight - the difference it needs
+    return node.weight - diff;
+}
+
+function getWrongChild(
+    node: Node,
+    targetWeight: number
+): {
+    node: Node;
+    targetWeight: number;
+} {
+    const map: { [nodeSum: string]: { node: Node; count: number } } = {};
+
+    node.children.forEach(child => {
+        const childSum = totalNodeWeight(child);
+        // If we have seen this sum before, then increment
+        if (map[childSum]) {
+            map[childSum].count++;
+        } else {
+            // Else a new sum, so create map object
+            map[childSum] = { node: child, count: 1 };
+        }
+    });
+
+    // Min is the node we see the least often
+    let minNode = null;
+    // The weight the other nodes are
+    let weight = 0;
+
+    for (const sum in map) {
+        if (map[sum].count === 1) {
+            // Get the wrong node
+            minNode = map[sum].node;
+        } else {
+            // Set the correct weight
+            weight = Number(sum);
+        }
+    }
+
+    if (minNode) {
+        // Return the wrongChild of the node that is wrong, and pass the weight the node should be!
+        return getWrongChild(minNode, weight);
+    }
+
+    // If !min, then unbalance in lower children, so inbalance must be this node!
+    return { node, targetWeight };
 }

@@ -32,7 +32,7 @@ describe('Day5 works', () => {
             expect(part2(testInput1)).toBe(60);
         });
         it('mainTestInput', () => {
-            expect(part2(testInput)).toBe(23948711);
+            expect(part2(testInput)).toBe(1226);
         });
     });
 });
