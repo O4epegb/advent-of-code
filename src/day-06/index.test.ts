@@ -4,7 +4,7 @@ const mainTestInput = '4	1	15	12	0	9	9	5	5	8	7	3	14	5	12	3';
 
 const testInput1 = '0	2	7	0';
 
-describe('Day5 works', () => {
+describe('Day6 works', () => {
     describe('part1', () => {
         it(testInput1, () => {
             expect(part1(testInput1)).toBe(5);

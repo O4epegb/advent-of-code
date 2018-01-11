@@ -17,7 +17,7 @@ gyxo (61)
 cntj (57)
 `;
 
-describe('Day5 works', () => {
+describe('Day7 works', () => {
     describe('part1', () => {
         it(testInput1, () => {
             expect(part1(testInput1)).toBe('tknk');
