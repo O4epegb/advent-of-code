@@ -9,16 +9,16 @@ enum Chars {
 function calculate(input: string) {
     const charactersLength = input.length;
     let pointer = 0;
-    let total = 0;
+    let groupTotal = 0;
+    let garbageTotal = 0;
     let currentLevel = 0;
     let insideGarbage = false;
-    let totalGarbage = 0;
 
     while (true) {
         if (pointer >= charactersLength) {
             return {
-                groupTotal: total,
-                garbageTotal: totalGarbage
+                groupTotal,
+                garbageTotal
             };
         }
 
@@ -31,7 +31,7 @@ function calculate(input: string) {
         }
 
         if (!insideGarbage && char === Chars.closeGroup) {
-            total = total + currentLevel;
+            groupTotal = groupTotal + currentLevel;
             currentLevel--;
         }
 
@@ -40,7 +40,7 @@ function calculate(input: string) {
         }
 
         if (insideGarbage && char !== Chars.cancel) {
-            totalGarbage++;
+            garbageTotal++;
         }
 
         if (!insideGarbage && char === Chars.openGarbage) {
