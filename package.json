@@ -5,9 +5,10 @@
     "scripts": {
         "precommit": "lint-staged",
         "test": "jest",
-        "watch:test": "jest --watchAll",
+        "watch:test": "jest --watch",
         "lintAll": "tslint --fix \"./src/**/*.ts\"",
-        "prettierAll": "prettier --parser typescript --single-quote --tab-width 4 --write \"./src/**/*.ts\""
+        "prettierAll":
+            "prettier --parser typescript --single-quote --tab-width 4 --write \"./src/**/*.ts\""
     },
     "dependencies": {
         "@types/jest": "^22.0.1",
@@ -27,14 +28,8 @@
         ]
     },
     "jest": {
-        "moduleFileExtensions": [
-            "ts",
-            "tsx",
-            "js"
-        ],
-        "roots": [
-            "src/"
-        ],
+        "moduleFileExtensions": ["ts", "tsx", "js"],
+        "roots": ["src/"],
         "transform": {
             "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
         },
@@ -42,8 +37,6 @@
         "testEnvironment": "node",
         "coverageDirectory": "./coverage",
         "collectCoverage": true,
-        "collectCoverageFrom": [
-            "src/**/*.ts"
-        ]
+        "collectCoverageFrom": ["src/**/*.ts"]
     }
 }
