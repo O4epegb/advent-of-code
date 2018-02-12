@@ -1,25 +1,5 @@
-// REFACTOR THIS STUFF
-
 export function part1(input: string): number {
-    const regexp = /(.*) <-> (.*)/;
-    const graph = new Graph();
-    const allVertices: Array<Vertex> = [];
-
-    input
-        .trim()
-        .split('\n')
-        .forEach(line => {
-            const [, vertex, neighboursString] = line.match(regexp) as Array<
-                Vertex
-            >;
-
-            const neighbours = neighboursString.split(', ');
-
-            allVertices.push(vertex);
-            graph.addVertex(vertex);
-
-            neighbours.forEach(neighbour => graph.addEdge(vertex, neighbour));
-        });
+    const { allVertices, graph } = generateGraph(input);
 
     const mainVertex = allVertices[0];
 
@@ -35,26 +15,8 @@ export function part1(input: string): number {
 }
 
 export function part2(input: string): number {
-    const regexp = /(.*) <-> (.*)/;
-    const graph = new Graph();
-    const allVertices: Array<Vertex> = [];
+    const { allVertices, graph } = generateGraph(input);
     const mainVertices: Array<Vertex> = [];
-
-    input
-        .trim()
-        .split('\n')
-        .forEach(line => {
-            const [, vertex, neighboursString] = line.match(regexp) as Array<
-                Vertex
-            >;
-
-            const neighbours = neighboursString.split(', ');
-
-            allVertices.push(vertex);
-            graph.addVertex(vertex);
-
-            neighbours.forEach(neighbour => graph.addEdge(vertex, neighbour));
-        });
 
     const mainVertex = allVertices[0];
     mainVertices.push(mainVertex);
@@ -76,6 +38,36 @@ export function part2(input: string): number {
     return mainVertices.length;
 }
 
+function generateGraph(input: string) {
+    const regexp = /(.*) <-> (.*)/;
+    const graph = new Graph();
+    const allVertices: Array<Vertex> = [];
+
+    input
+        .trim()
+        .split('\n')
+        .forEach(line => {
+            const [, vertex, neighboursString] = line.match(regexp) as Array<
+                Vertex
+            >;
+
+            const neighbours = neighboursString.split(', ');
+
+            allVertices.push(vertex);
+            graph.addVertex(vertex);
+
+            neighbours.forEach(neighbour => {
+                graph.addVertex(neighbour);
+                graph.addEdge(vertex, neighbour);
+            });
+        });
+
+    return {
+        allVertices,
+        graph
+    };
+}
+
 type Vertex = string;
 
 export class Graph {
@@ -83,8 +75,10 @@ export class Graph {
     verticesNumber = 0;
 
     addVertex(vertex: Vertex) {
-        this.verticesNumber++;
-        this.adjacencyList.set(vertex, []);
+        if (!this.adjacencyList.get(vertex)) {
+            this.verticesNumber++;
+            this.adjacencyList.set(vertex, []);
+        }
     }
 
     addEdge(vertexA: Vertex, vertexB: Vertex) {
