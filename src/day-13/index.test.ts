@@ -14,16 +14,16 @@ describe('Day13 works', () => {
             expect(part1(testInput1)).toBe(24);
         });
         it('mainTestInput', () => {
-            expect(part1(testInput)).toBe(1);
+            expect(part1(testInput)).toBe(1840);
         });
     });
 
     describe('part2', () => {
         it(testInput1, () => {
-            expect(part2(testInput1)).toBe(1);
+            expect(part2(testInput1)).toBe(10);
         });
         it('mainTestInput', () => {
-            expect(part2(testInput)).toBe(1);
+            expect(part2(testInput)).toBe(3850260);
         });
     });
 });

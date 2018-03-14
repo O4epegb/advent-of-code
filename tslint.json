@@ -12,6 +12,7 @@
         "object-literal-sort-keys": false,
         "no-bitwise": false,
         "member-access": false,
-        "no-empty": false
+        "no-empty": false,
+        "prefer-for-of": false
     }
 }
