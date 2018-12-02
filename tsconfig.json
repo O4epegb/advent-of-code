@@ -2,9 +2,10 @@
     "compilerOptions": {
         "target": "es2015",
         "strict": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "lib": ["es2015"]
-    },
-    "compileOnSave": false
+    }
 }

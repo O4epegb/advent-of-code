@@ -16,11 +16,6 @@ interface RegisterMap {
     [name: string]: number;
 }
 
-interface Result {
-    registerMap: RegisterMap;
-    instructionsList: InstructionList;
-}
-
 function processInstructions(instructionsString: string) {
     let maxValueEver = 0;
     const registerMap = {} as RegisterMap;
